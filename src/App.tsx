@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import { SSEList} from "./SSEList";
+import { SSEList } from "./SSEList";
 
 function App() {
-  return (
-    <div className="App">
-      <SSEList />
-    </div>
-  );
+    return (
+        <div className="App">
+            <SSEList/>
+        </div>
+    );
 }
 
 export default App;

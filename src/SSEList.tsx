@@ -1,16 +1,16 @@
 import React from 'react';
-import {useEffect, useState} from "react";
-import {SSEHelper} from "./helpers/SSEHelper";
+import { useEffect, useState } from "react";
+import { LiftStatusMessage, SSEHelper } from "./helpers/SSEHelper";
 
 export const SSEList = () => {
 
-    const [eventList, setEventList] = useState([] as any[]);
+    const [eventList, setEventList] = useState<Array<LiftStatusMessage>>([]);
 
     useEffect(() => {
         const observable = SSEHelper.instance.getLiftStatusObservable();
         const subscription = observable.subscribe(
             message => setEventList([...eventList, message]),
-            console.error,
+            console.error, // TODO dodaj obsługę błędów
         )
 
         return () => subscription.unsubscribe();

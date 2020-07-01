@@ -1,8 +1,21 @@
-import {fromEvent} from 'rxjs';
-import {map} from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 const liftStatusStreamUrl = 'http://localhost:8080/stream';
 const messageEventName = 'message'
+
+export enum LiftState {
+    moving = 'moving',
+    up = 'up',
+    down = 'down',
+}
+
+export type LiftStatusMessage = {
+    id: string;
+    floor: number;
+    state: LiftState;
+    targetFloor?: number;
+}
 
 export class SSEHelper {
     private static _instance: SSEHelper;
@@ -22,5 +35,5 @@ export class SSEHelper {
 
     getLiftStatusObservable = () =>
         fromEvent<MessageEvent>(this._liftStatusEventSource, messageEventName)
-            .pipe(map(event => event.data))
+            .pipe<LiftStatusMessage>(map(event => event.data))
 }
