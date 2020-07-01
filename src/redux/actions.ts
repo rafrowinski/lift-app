@@ -1,7 +1,6 @@
 export enum Actions {
-    RequestLiftStatus = 'RequestLiftStatus',
-    LiftStatusReceived = 'LiftStatusReceived',
-    RequestBuildingData = 'RequestBuildingData',
+    LiftStatusArrayReceived = 'LiftStatusArrayReceived',
+    CalledLiftStatusReceived = 'CalledLiftStatusReceived',
     BuildingDataReceived = 'BuildingDataReceived',
     LiveLiftStatusReceived = 'LiveLiftStatusReceived',
 }

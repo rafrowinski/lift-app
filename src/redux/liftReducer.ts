@@ -2,17 +2,22 @@ import { ILiftAction } from './actionInterfaces';
 import { Actions } from './actions';
 import { initialStore } from './store';
 
-export const mainReducer = (state = initialStore, action: ILiftAction) => {
+export const liftReducer = (state = initialStore, action: ILiftAction) => {
     switch (action.type) {
-        case Actions.RequestLiftStatus:
-            return;
-        case Actions.LiftStatusReceived:
-            return;
-        case Actions.RequestBuildingData:
-            return;
+        case Actions.LiftStatusArrayReceived:
+            return { ...state, liftStatusArray: action.liftStatusArray };
+
+        case Actions.CalledLiftStatusReceived:
+            return { ...state, calledLiftStatus: action.liftStatus };
+
         case Actions.BuildingDataReceived:
             return { ...state, buildingData: action.buildingData };
+
         case Actions.LiveLiftStatusReceived:
-            return
+            const { liftStatus } = action;
+            return { ...state, liftStatusMap: { ...state.liftStatusMap, [liftStatus.id]: liftStatus } };
+
+        default:
+            return state;
     }
 }

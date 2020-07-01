@@ -1,33 +1,30 @@
+import { Dispatch } from 'redux';
 import { Actions } from './actions'
-import { BuildingData, LiftStatusArray } from '../helpers/RestHelper'
+import { BuildingData, LiftStatusArray, RestHelper } from '../helpers/RestHelper'
 import { LiftStatus } from '../helpers/SSEHelper'
 import {
     IBuildingDataReceivedAction,
-    ILiftStatusReceivedAction,
+    ILiftStatusArrayReceivedAction,
     ILiveLiftStatusReceivedAction,
-    IRequestBuildingDataAction,
-    IRequestLiftStatusAction
 } from './actionInterfaces'
 
-export const RequestLiftStatus = (): IRequestLiftStatusAction => ({
-    type: Actions.RequestLiftStatus,
-});
+export const requestLiftStatus = () => (dispatch: Dispatch) =>
+    RestHelper.getLiftStatus().then(status => dispatch(liftStatusReceived(status)));
 
-export const LiftStatusReceived = (liftStatusArray: LiftStatusArray): ILiftStatusReceivedAction => ({
-    type: Actions.LiftStatusReceived,
+export const liftStatusReceived = (liftStatusArray: LiftStatusArray): ILiftStatusArrayReceivedAction => ({
+    type: Actions.LiftStatusArrayReceived,
     liftStatusArray,
 })
 
-export const RequestBuildingData = (): IRequestBuildingDataAction => ({
-    type: Actions.RequestBuildingData,
-})
+export const requestBuildingData = () => (dispatch: Dispatch) =>
+    RestHelper.getBuildingData().then(data => dispatch(buildingDataReceived(data)));
 
-export const BuildingDataReceived = (buildingData: BuildingData): IBuildingDataReceivedAction => ({
+export const buildingDataReceived = (buildingData: BuildingData): IBuildingDataReceivedAction => ({
     type: Actions.BuildingDataReceived,
     buildingData,
 })
 
-export const LiveLiftStatusReceived = (liftStatus: LiftStatus): ILiveLiftStatusReceivedAction => ({
+export const liveLiftStatusReceived = (liftStatus: LiftStatus): ILiveLiftStatusReceivedAction => ({
     type: Actions.LiveLiftStatusReceived,
     liftStatus,
 })

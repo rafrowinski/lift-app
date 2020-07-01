@@ -1,21 +1,23 @@
 import React from 'react';
-import { useEffect, useState } from "react";
-import { LiftStatus, SSEHelper } from "./helpers/SSEHelper";
+import { connect } from 'react-redux';
+import { IStore, LiftStatusMap } from './redux/store';
 
-export const SSEList = () => {
-
-    const [eventList, setEventList] = useState<Array<LiftStatus>>([]);
-
-    useEffect(() => {
-        const observable = SSEHelper.instance.getLiftStatusObservable();
-        const subscription = observable.subscribe(
-            message => setEventList([...eventList, message]),
-            console.error, // TODO add error handling
-        )
-
-        return () => subscription.unsubscribe();
-    });
-
-    return (<div>{eventList}</div>);
+interface IStoreProps {
+    liftStatusMap: LiftStatusMap;
 }
 
+type IProps = IStoreProps;
+
+export const Component: React.FC<IProps> = ({ liftStatusMap }) => {
+    return (<div>{JSON.stringify(liftStatusMap)}</div>);
+}
+
+type IMapStateToProps = {
+    liftStatusMap: LiftStatusMap,
+}
+
+const mapStateToProps: (store: IStore) => IMapStateToProps = ({ liftStatusMap }) => ({
+    liftStatusMap,
+});
+
+export const SSEList = connect(mapStateToProps)(Component);

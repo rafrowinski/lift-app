@@ -2,7 +2,8 @@ import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 const liftStatusStreamUrl = 'http://localhost:8080/stream';
-const messageEventName = 'message'
+const messageEventName = 'message';
+const errorEventName = 'error';
 
 export enum LiftState {
     moving = 'moving',
@@ -15,6 +16,11 @@ export type LiftStatus = {
     floor: number;
     state: LiftState;
     targetFloor?: number;
+}
+
+// TODO add error handling
+export type LiftStatusError = {
+    error: string;
 }
 
 // TODO add SSE polyfill just in case
@@ -36,5 +42,8 @@ export class SSEHelper {
 
     getLiftStatusObservable = () =>
         fromEvent<MessageEvent>(this._liftStatusEventSource, messageEventName)
-            .pipe<LiftStatus>(map(event => event.data))
+            .pipe<LiftStatus>(map(event => JSON.parse(event.data)))
+
+    getLiftStatusErrorObservable = () =>
+        fromEvent<MessageEvent>(this._liftStatusEventSource, errorEventName)
 }

@@ -3,17 +3,14 @@ import { Actions } from './actions';
 import { BuildingData, LiftStatusArray } from '../helpers/RestHelper';
 import { LiftStatus } from '../helpers/SSEHelper';
 
-export interface IRequestLiftStatusAction extends Action {
-    type: Actions.RequestLiftStatus;
-}
-
-export interface ILiftStatusReceivedAction extends Action {
-    type: Actions.LiftStatusReceived;
+export interface ILiftStatusArrayReceivedAction extends Action {
+    type: Actions.LiftStatusArrayReceived;
     liftStatusArray: LiftStatusArray;
 }
 
-export interface IRequestBuildingDataAction extends Action {
-    type: Actions.RequestBuildingData;
+export interface ICalledLiftStatusReceivedAction extends Action {
+    type: Actions.CalledLiftStatusReceived;
+    liftStatus: LiftStatus;
 }
 
 export interface IBuildingDataReceivedAction extends Action {
@@ -28,9 +25,8 @@ export interface ILiveLiftStatusReceivedAction extends Action {
 
 
 export type ILiftAction =
-    IRequestLiftStatusAction |
-    ILiftStatusReceivedAction |
-    IRequestBuildingDataAction |
+    ILiftStatusArrayReceivedAction |
+    ICalledLiftStatusReceivedAction |
     IBuildingDataReceivedAction |
     ILiveLiftStatusReceivedAction
     ;
