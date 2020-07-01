@@ -1,20 +1,19 @@
 import React from 'react';
 import {useEffect, useState} from "react";
+import {SSEHelper} from "./helpers/SSEHelper";
 
 export const SSEList = () => {
 
     const [eventList, setEventList] = useState([] as any[]);
 
     useEffect(() => {
-        const evtSource = new EventSource("http://localhost:8080/stream");
-        evtSource.onmessage = event => {
-            setEventList([...eventList, event.data]);
-        }
+        const observable = SSEHelper.getLiftStatusObservable();
+        const subscription = observable.subscribe(
+            message => setEventList([...eventList, message]),
+            console.error,
+        )
 
-        return () => {
-            evtSource.onmessage = () => { // todo change to add and remove listener
-            }
-        };
+        return () => subscription.unsubscribe();
     });
 
     return (<div>{eventList}</div>);
