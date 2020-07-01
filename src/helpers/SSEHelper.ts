@@ -17,6 +17,7 @@ export type LiftStatusMessage = {
     targetFloor?: number;
 }
 
+// TODO add SSE polyfill just in case
 export class SSEHelper {
     private static _instance: SSEHelper;
     private _liftStatusEventSource: EventSource;

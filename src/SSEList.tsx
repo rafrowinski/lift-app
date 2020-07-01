@@ -10,7 +10,7 @@ export const SSEList = () => {
         const observable = SSEHelper.instance.getLiftStatusObservable();
         const subscription = observable.subscribe(
             message => setEventList([...eventList, message]),
-            console.error, // TODO dodaj obsługę błędów
+            console.error, // TODO add error handling
         )
 
         return () => subscription.unsubscribe();
