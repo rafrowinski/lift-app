@@ -10,7 +10,7 @@ export enum LiftState {
     down = 'down',
 }
 
-export type LiftStatusMessage = {
+export type LiftStatus = {
     id: string;
     floor: number;
     state: LiftState;
@@ -36,5 +36,5 @@ export class SSEHelper {
 
     getLiftStatusObservable = () =>
         fromEvent<MessageEvent>(this._liftStatusEventSource, messageEventName)
-            .pipe<LiftStatusMessage>(map(event => event.data))
+            .pipe<LiftStatus>(map(event => event.data))
 }

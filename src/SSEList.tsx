@@ -1,10 +1,10 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import { LiftStatusMessage, SSEHelper } from "./helpers/SSEHelper";
+import { LiftStatus, SSEHelper } from "./helpers/SSEHelper";
 
 export const SSEList = () => {
 
-    const [eventList, setEventList] = useState<Array<LiftStatusMessage>>([]);
+    const [eventList, setEventList] = useState<Array<LiftStatus>>([]);
 
     useEffect(() => {
         const observable = SSEHelper.instance.getLiftStatusObservable();
