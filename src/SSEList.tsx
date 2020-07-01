@@ -7,7 +7,7 @@ export const SSEList = () => {
     const [eventList, setEventList] = useState([] as any[]);
 
     useEffect(() => {
-        const observable = SSEHelper.getLiftStatusObservable();
+        const observable = SSEHelper.instance.getLiftStatusObservable();
         const subscription = observable.subscribe(
             message => setEventList([...eventList, message]),
             console.error,
