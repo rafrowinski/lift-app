@@ -1,5 +1,5 @@
 import { applyMiddleware, createStore } from 'redux';
-import { BuildingData, LiftStatusArray } from '../helpers/RestHelper';
+import { BuildingData, CallLiftResponse, LiftStatusArray } from '../helpers/RestHelper';
 import { LiftStatus } from '../helpers/SSEHelper';
 import { liftLiveStatusMiddleware } from './liftLiveStatusMiddleware';
 import { liftReducer } from './liftReducer';
@@ -12,7 +12,7 @@ export interface IStore {
     buildingData: BuildingData | null;
     liftStatusMap: LiftStatusMap;
     liftStatusArray: LiftStatusArray | null;
-    calledLiftStatus: LiftStatus | null;
+    calledLiftStatus: CallLiftResponse | null;
 }
 
 export const initialStore: IStore = {

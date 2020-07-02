@@ -1,10 +1,14 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useCallback } from 'react';
 import { CircularProgress, Button, Grid, makeStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { Dispatch } from 'redux';
 import { BuildingData } from '../../helpers/RestHelper';
-import { LiftThunkDispatch, requestBuildingData } from '../../redux/actionCreators';
+import { callLift, LiftThunkDispatch, requestBuildingData } from '../../redux/actionCreators';
 import { IStore } from '../../redux/store';
+
+interface IOwnProps {
+    onFloorSelected: (floorNumber: number) => void
+}
 
 interface IStateProps {
     buildingData: BuildingData | null;
@@ -23,10 +27,11 @@ const useStyles = makeStyles({
     },
 });
 
-type IProps = IStateProps & IDispatchProps;
+type IProps = IOwnProps & IStateProps & IDispatchProps;
 
-const Container: FC<IProps> = ({ buildingData, requestBuildingData }) => {
+const Component: FC<IProps> = ({ buildingData, requestBuildingData, onFloorSelected }) => {
     const classes = useStyles();
+    const onFloorSelectedCallback = useCallback((floorNumber: number) => onFloorSelected(floorNumber), []);
 
     const renderPanel = () => {
         if (!buildingData) {
@@ -40,6 +45,7 @@ const Container: FC<IProps> = ({ buildingData, requestBuildingData }) => {
                           xs={4}
                           key={`floor-button-${i}`}>
                         <Button variant="contained"
+                                onClick={() => onFloorSelectedCallback(i)}
                                 className={classes.button}>{i}</Button>
                     </Grid>
                 ))
@@ -59,18 +65,9 @@ const Container: FC<IProps> = ({ buildingData, requestBuildingData }) => {
     }
 
     return (
-        <Grid container
-              spacing={0}
-              direction="column"
-              alignItems="center"
-              justify="center">
-            <Grid item
-                  md={4}
-                  sm={12}>
-                {renderPanel()}
-            </Grid>
-        </Grid>
-
+        <>
+            {renderPanel()}
+        </>
     );
 }
 
@@ -80,12 +77,12 @@ const mapStateToProps: IMapStateToProps = ({ buildingData }) => ({
     buildingData,
 })
 
-type IMapDispatchToProps = (dispatch: Dispatch) => IDispatchProps;
+type IMapDispatchToProps = (dispatch: LiftThunkDispatch) => IDispatchProps;
 
 const mapDispatchToProps: IMapDispatchToProps = (dispatch: LiftThunkDispatch) => ({
     requestBuildingData: () => dispatch(requestBuildingData()),
 })
 
-export const memoCallLift = memo(Container);
+export const memoCallLift = memo(Component);
 
-export const CallLift = connect<IStateProps, IDispatchProps, {}, IStore>(mapStateToProps, mapDispatchToProps)(memoCallLift);
+export const CallLift = connect<IStateProps, IDispatchProps, IOwnProps, IStore>(mapStateToProps, mapDispatchToProps)(memoCallLift);

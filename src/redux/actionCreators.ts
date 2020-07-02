@@ -1,9 +1,9 @@
 import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Actions } from './actions'
-import { BuildingData, LiftStatusArray, RestHelper } from '../helpers/RestHelper'
+import { BuildingData, CallLiftResponse, LiftStatusArray, RestHelper } from '../helpers/RestHelper'
 import { LiftStatus } from '../helpers/SSEHelper'
 import {
-    IBuildingDataReceivedAction,
+    IBuildingDataReceivedAction, ICalledLiftStatusReceivedAction,
     ILiftAction,
     ILiftStatusArrayReceivedAction,
     ILiveLiftStatusReceivedAction,
@@ -35,5 +35,15 @@ export const buildingDataReceived = (buildingData: BuildingData): IBuildingDataR
 
 export const liveLiftStatusReceived = (liftStatus: LiftStatus): ILiveLiftStatusReceivedAction => ({
     type: Actions.LiveLiftStatusReceived,
+    liftStatus,
+})
+
+export const callLift =
+    (floorNumber: number): LiftThunkResult =>
+        (dispatch: LiftThunkDispatch) =>
+            RestHelper.callLift(floorNumber).then(data => dispatch(calledLiftStatusReceived(data)));
+
+export const calledLiftStatusReceived = (liftStatus: CallLiftResponse): ICalledLiftStatusReceivedAction => ({
+    type: Actions.CalledLiftStatusReceived,
     liftStatus,
 })

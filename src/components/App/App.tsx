@@ -1,14 +1,25 @@
 import React from 'react';
 import './App.css';
-import { Container } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import { SSEList } from '../../SSEList';
-import { CallLift } from '../CallLift/CallLift';
+import { LiftWizard } from '../LiftStepper/LiftWizard';
 
 function App() {
     return (
-        <Container >
-            <CallLift />
-            <SSEList />
+        <Container>
+            <Grid container
+                  spacing={0}
+                  direction="column"
+                  alignItems="center"
+                  justify="center">
+                <Grid item
+                      md={4}
+                      sm={12}>
+                    <LiftWizard/>
+                </Grid>
+            </Grid>
+
+            <SSEList/>
         </Container>
     );
 }

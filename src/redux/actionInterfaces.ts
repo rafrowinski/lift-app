@@ -1,6 +1,6 @@
 import { Action } from 'redux';
 import { Actions } from './actions';
-import { BuildingData, LiftStatusArray } from '../helpers/RestHelper';
+import { BuildingData, CallLiftResponse, LiftStatusArray } from '../helpers/RestHelper';
 import { LiftStatus } from '../helpers/SSEHelper';
 
 export interface ILiftStatusArrayReceivedAction extends Action {
@@ -10,7 +10,7 @@ export interface ILiftStatusArrayReceivedAction extends Action {
 
 export interface ICalledLiftStatusReceivedAction extends Action {
     type: Actions.CalledLiftStatusReceived;
-    liftStatus: LiftStatus;
+    liftStatus: CallLiftResponse;
 }
 
 export interface IBuildingDataReceivedAction extends Action {
@@ -23,10 +23,14 @@ export interface ILiveLiftStatusReceivedAction extends Action {
     liftStatus: LiftStatus;
 }
 
+export interface ICalledLiftStatusReceivedAction extends Action {
+    type: Actions.CalledLiftStatusReceived;
+    liftStatus: CallLiftResponse;
+}
 
 export type ILiftAction =
-    ILiftStatusArrayReceivedAction |
-    ICalledLiftStatusReceivedAction |
-    IBuildingDataReceivedAction |
-    ILiveLiftStatusReceivedAction
+    ILiftStatusArrayReceivedAction
+    | ICalledLiftStatusReceivedAction
+    | IBuildingDataReceivedAction
+    | ILiveLiftStatusReceivedAction
     ;

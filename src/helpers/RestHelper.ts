@@ -1,9 +1,9 @@
 // TODO add fetch polyfill just in case
 import { LiftStatus } from './SSEHelper';
 
-function baseUrl(strings: TemplateStringsArray, ...values: Array<number>) {
-    return `http://localhost:8080${strings[0]}${values[0] ? values[0] : ''}`;
-}
+const baseUrl = 'http://localhost:8080';
+
+const putSettings = { method: 'PUT' };
 
 export interface BuildingData {
     floors: number,
@@ -12,11 +12,21 @@ export interface BuildingData {
 
 export type LiftStatusArray = Array<LiftStatus>;
 
+export interface CallLiftResponse {
+    elevator?: LiftStatus,
+    error?: string
+}
+
 export const RestHelper = {
-    getBuildingData: (): Promise<BuildingData> => fetch(baseUrl`/building`)
-        .then(response => response.json()),
-    getLiftStatus: (): Promise<LiftStatusArray> => fetch(baseUrl`/elevators`)
-        .then(response => response.json()),
-    callLift: (floorNumber: number): Promise<LiftStatus> => fetch(baseUrl`/floor/${floorNumber}`)
-        .then(response => response.json()),
+    getBuildingData: (): Promise<BuildingData> =>
+        fetch(`${baseUrl}/building`)
+            .then(response => response.json()),
+
+    getLiftStatus: (): Promise<LiftStatusArray> =>
+        fetch(`${baseUrl}/elevators`)
+            .then(response => response.json()),
+
+    callLift: (floorNumber: number): Promise<CallLiftResponse> =>
+        fetch(`${baseUrl}/floor/${floorNumber}`, putSettings)
+            .then(response => response.json()),
 }
