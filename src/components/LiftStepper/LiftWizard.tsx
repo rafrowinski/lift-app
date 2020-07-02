@@ -1,5 +1,5 @@
 import React, { FC, memo, useCallback, useEffect } from 'react';
-import { Stepper, Step, StepLabel, Button } from '@material-ui/core';
+import { Stepper, Step, StepLabel, Button, Grid } from '@material-ui/core';
 import { useState } from 'react';
 import { connect } from 'react-redux';
 import { CallLiftResponse } from '../../helpers/RestHelper';
@@ -32,13 +32,13 @@ const Component: FC<IProps> = ({ callLift, calledLiftStatus }) => {
         callLift(floorNumber);
         setChosenFloor(floorNumber);
         nextStep();
-    }, [])
+    }, [callLift])
 
     useEffect(() => {
         if (chosenFloor > 0 && calledLiftStatus && calledLiftStatus.error) {
             setTimeout(() => callLift(chosenFloor!), nextRequestWaitMillis);
         }
-    });
+    }, [chosenFloor, calledLiftStatus, callLift]);
 
     const steps = getSteps();
 
@@ -50,11 +50,17 @@ const Component: FC<IProps> = ({ callLift, calledLiftStatus }) => {
                 );
             case 1:
                 return (
-                    <>
-                        <WaitingScreen chosenFloor={chosenFloor}/>
-                        <Button variant="contained"
-                                onClick={() => goBack()}>Zamów kolejną</Button>
-                    </>
+                    <Grid container
+                          spacing={1}
+                          direction="column">
+                        <Grid item xs={12}>
+                            <WaitingScreen chosenFloor={chosenFloor}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <Button variant="contained"
+                                    onClick={() => goBack()}>Zamów kolejną</Button>
+                        </Grid>
+                    </Grid>
                 );
         }
     }

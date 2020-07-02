@@ -1,9 +1,8 @@
 import React, { FC, memo, useCallback } from 'react';
 import { CircularProgress, Button, Grid, makeStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
-import { Dispatch } from 'redux';
 import { BuildingData } from '../../helpers/RestHelper';
-import { callLift, LiftThunkDispatch, requestBuildingData } from '../../redux/actionCreators';
+import { LiftThunkDispatch, requestBuildingData } from '../../redux/actionCreators';
 import { IStore } from '../../redux/store';
 
 interface IOwnProps {
@@ -31,7 +30,7 @@ type IProps = IOwnProps & IStateProps & IDispatchProps;
 
 const Component: FC<IProps> = ({ buildingData, requestBuildingData, onFloorSelected }) => {
     const classes = useStyles();
-    const onFloorSelectedCallback = useCallback((floorNumber: number) => onFloorSelected(floorNumber), []);
+    const onFloorSelectedCallback = useCallback((floorNumber: number) => onFloorSelected(floorNumber), [onFloorSelected]);
 
     const renderPanel = () => {
         if (!buildingData) {

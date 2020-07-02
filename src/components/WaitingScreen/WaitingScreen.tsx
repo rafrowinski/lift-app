@@ -1,5 +1,5 @@
-import { Card, CardContent, CircularProgress, Grid, Paper, Typography } from '@material-ui/core';
-import React, { FC, memo, useState } from 'react';
+import { Card, CardContent, CircularProgress, Grid, Typography } from '@material-ui/core';
+import React, { FC, memo } from 'react';
 import { connect } from 'react-redux';
 import { CallLiftResponse, LiftStatusArray } from '../../helpers/RestHelper';
 import { LiftStatus } from '../../helpers/SSEHelper';
