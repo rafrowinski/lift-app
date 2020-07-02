@@ -1,23 +1,32 @@
-import { Dispatch } from 'redux';
+import { ThunkAction, ThunkDispatch } from 'redux-thunk';
 import { Actions } from './actions'
 import { BuildingData, LiftStatusArray, RestHelper } from '../helpers/RestHelper'
 import { LiftStatus } from '../helpers/SSEHelper'
 import {
     IBuildingDataReceivedAction,
+    ILiftAction,
     ILiftStatusArrayReceivedAction,
     ILiveLiftStatusReceivedAction,
 } from './actionInterfaces'
+import { IStore } from './store';
 
-export const requestLiftStatus = () => (dispatch: Dispatch) =>
-    RestHelper.getLiftStatus().then(status => dispatch(liftStatusReceived(status)));
+export type LiftThunkResult<R = void> = ThunkAction<R, IStore, undefined, ILiftAction>;
+export type LiftThunkDispatch = ThunkDispatch<IStore, undefined, ILiftAction>;
+
+export const requestLiftStatus =
+    (): LiftThunkResult =>
+        (dispatch: LiftThunkDispatch) =>
+            RestHelper.getLiftStatus().then(status => dispatch(liftStatusReceived(status)));
 
 export const liftStatusReceived = (liftStatusArray: LiftStatusArray): ILiftStatusArrayReceivedAction => ({
     type: Actions.LiftStatusArrayReceived,
     liftStatusArray,
 })
 
-export const requestBuildingData = () => (dispatch: Dispatch) =>
-    RestHelper.getBuildingData().then(data => dispatch(buildingDataReceived(data)));
+export const requestBuildingData =
+    (): LiftThunkResult =>
+        (dispatch: LiftThunkDispatch) =>
+            RestHelper.getBuildingData().then(data => dispatch(buildingDataReceived(data)));
 
 export const buildingDataReceived = (buildingData: BuildingData): IBuildingDataReceivedAction => ({
     type: Actions.BuildingDataReceived,

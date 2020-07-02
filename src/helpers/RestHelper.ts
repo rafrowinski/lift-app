@@ -2,7 +2,7 @@
 import { LiftStatus } from './SSEHelper';
 
 function baseUrl(strings: TemplateStringsArray, ...values: Array<number>) {
-    return `http://localhost:8080${strings[0]}${values[0]}`;
+    return `http://localhost:8080${strings[0]}${values[0] ? values[0] : ''}`;
 }
 
 export interface BuildingData {

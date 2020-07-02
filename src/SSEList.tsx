@@ -12,11 +12,11 @@ export const Component: React.FC<IProps> = ({ liftStatusMap }) => {
     return (<div>{JSON.stringify(liftStatusMap)}</div>);
 }
 
-type IMapStateToProps = {
+type IMapStateToProps = (store: IStore) => {
     liftStatusMap: LiftStatusMap,
 }
 
-const mapStateToProps: (store: IStore) => IMapStateToProps = ({ liftStatusMap }) => ({
+const mapStateToProps: IMapStateToProps = ({ liftStatusMap }) => ({
     liftStatusMap,
 });
 
