@@ -1,7 +1,6 @@
 import React from 'react';
 import './App.css';
 import { Container, Grid } from '@material-ui/core';
-import { SSEList } from '../../SSEList';
 import { LiftWizard } from '../LiftStepper/LiftWizard';
 
 function App() {
@@ -18,8 +17,6 @@ function App() {
                     <LiftWizard/>
                 </Grid>
             </Grid>
-
-            <SSEList/>
         </Container>
     );
 }

@@ -1,5 +1,5 @@
 import { Card, CardContent, CircularProgress, Grid, Paper, Typography } from '@material-ui/core';
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useState } from 'react';
 import { connect } from 'react-redux';
 import { CallLiftResponse, LiftStatusArray } from '../../helpers/RestHelper';
 import { LiftStatus } from '../../helpers/SSEHelper';
@@ -17,45 +17,59 @@ interface IStateProps {
 
 type IProps = IOwnProps & IStateProps;
 
-// TODO przenieś tutaj mechanizm przywołania windy + uwzględnij że wszystkie mogą być zajęte
 const Component: FC<IProps> = ({ chosenFloor, liftStatusMap, liftStatusArray, calledLiftStatus }) => {
     const getLiftNumber = (liftId: string) => liftId.split('elv')[1];
 
-    const renderPanel = () => {
-        if (calledLiftStatus && calledLiftStatus.elevator) {
+    const renderLiveStatus = (calledLiftStatus: LiftStatus) => {
+        const calledLiftId = calledLiftStatus.id;
+        const currentFloor = liftStatusMap[calledLiftId].floor;
+        const liftNumber = getLiftNumber(calledLiftId);
+
+        if (currentFloor === calledLiftStatus.targetFloor) {
             return (
-                <Card>
-                    <CardContent>
-                        <Typography component="h5" variant="h5">
-                            Przyjedzie po Ciebie winda numer {getLiftNumber(calledLiftStatus.elevator.id)}
-                        </Typography>
-                    </CardContent>
-                </Card>
-            );
+                <Typography component="h5" variant="h5">
+                    Juz jest! Wejdź do windy numer {liftNumber}
+                </Typography>
+            )
         } else {
             return (
-                <Paper>
-                    <Grid container>
-                        <Grid item>
-                            <div>Daj nam chwilę. Szukamy windy najbliższej Ciebie</div>
-                        </Grid>
-                        <Grid item>
-                            <CircularProgress/>
-                        </Grid>
+                <Grid item xs={12}>
+                    <Typography component="h5" variant="h5">
+                        Przyjedzie po Ciebie winda numer {liftNumber}
+                    </Typography>
+                    {currentFloor && (<Typography component="h5" variant="h5">
+                        obecnie jest na piętrze {currentFloor}
+                    </Typography>)}
+                </Grid>
+            );
+        }
+    }
+
+    const renderPanel = () => {
+        if (calledLiftStatus && calledLiftStatus.elevator && liftStatusMap && liftStatusMap[calledLiftStatus.elevator.id]) {
+            return renderLiveStatus(calledLiftStatus.elevator);
+        } else {
+            return (
+                <>
+                    <Grid item xs={12}>
+                        <Typography component="h5" variant="h5">Daj nam chwilę. Szukamy dla Ciebie windy</Typography>
                     </Grid>
-                </Paper>
-            )
+                    <Grid item xs={12}>
+                        <CircularProgress/>
+                    </Grid>
+                </>
+            );
         }
     };
-    return (
-        <>
-            {renderPanel()}
 
-            <div>chosenFloor {JSON.stringify(chosenFloor)}</div>
-            <div>liftStatusMap {JSON.stringify(liftStatusMap)}</div>
-            <div>liftStatusArray {JSON.stringify(liftStatusArray)}</div>
-            <div>calledLiftStatus {JSON.stringify(calledLiftStatus)}</div>
-        </>
+    return (
+        <Card>
+            <CardContent>
+                <Grid container>
+                    {renderPanel()}
+                </Grid>
+            </CardContent>
+        </Card>
     );
 }
 
