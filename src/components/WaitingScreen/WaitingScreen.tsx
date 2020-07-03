@@ -3,7 +3,7 @@ import React, { FC, memo } from 'react';
 import { connect } from 'react-redux';
 import { CallLiftResponse, LiftStatusArray } from '../../helpers/RestHelper';
 import { LiftStatus } from '../../helpers/SSEHelper';
-import { IStore, LiftStatusMap } from '../../redux/store';
+import { IMapStateToProps, IStore, LiftStatusMap } from '../../redux/store';
 
 interface IOwnProps {
     chosenFloor: number;
@@ -73,10 +73,7 @@ const Component: FC<IProps> = ({ chosenFloor, liftStatusMap, liftStatusArray, ca
     );
 }
 
-
-type IMapStateToProps = (store: IStore) => IStateProps;
-
-const mapStateToProps: IMapStateToProps = ({ liftStatusMap, liftStatusArray, calledLiftStatus }) => ({
+const mapStateToProps: IMapStateToProps<IStateProps> = ({ liftStatusMap, liftStatusArray, calledLiftStatus }) => ({
     liftStatusMap,
     liftStatusArray,
     calledLiftStatus,

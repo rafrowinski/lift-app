@@ -1,5 +1,8 @@
 import { fromEvent } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { NativeEventSource, EventSourcePolyfill } from 'event-source-polyfill';
+
+const EventSource = NativeEventSource || EventSourcePolyfill;
 
 const liftStatusStreamUrl = 'http://localhost:8080/stream';
 const messageEventName = 'message';
@@ -23,7 +26,6 @@ export type LiftStatusError = {
     error: string;
 }
 
-// TODO add SSE polyfill just in case
 export class SSEHelper {
     private static _instance: SSEHelper;
     private _liftStatusEventSource: EventSource;

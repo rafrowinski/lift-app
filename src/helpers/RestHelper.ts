@@ -1,5 +1,7 @@
-// TODO add fetch polyfill just in case
+import { fetch as fetchPolyfill } from 'whatwg-fetch';
 import { LiftStatus } from './SSEHelper';
+
+const fetch = window.fetch || fetchPolyfill;
 
 const baseUrl = 'http://localhost:8080';
 

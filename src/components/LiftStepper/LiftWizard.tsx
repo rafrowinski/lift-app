@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { connect } from 'react-redux';
 import { CallLiftResponse } from '../../helpers/RestHelper';
 import { callLift, LiftThunkDispatch } from '../../redux/actionCreators';
-import { IStore } from '../../redux/store';
+import { IStore, IMapStateToProps } from '../../redux/store';
 import { CallLift } from '../CallLift/CallLift';
 import { WaitingScreen } from '../WaitingScreen/WaitingScreen';
 
@@ -79,9 +79,7 @@ const Component: FC<IProps> = ({ callLift, calledLiftStatus }) => {
     );
 }
 
-type IMapStateToProps = (store: IStore) => IStateProps; // TODO create an interface with a generic type for return type
-
-const mapStateToProps: IMapStateToProps = ({ calledLiftStatus }) => ({
+const mapStateToProps: IMapStateToProps<IStateProps> = ({ calledLiftStatus }) => ({
     calledLiftStatus,
 });
 

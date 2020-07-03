@@ -22,4 +22,6 @@ export const initialStore: IStore = {
     calledLiftStatus: null,
 }
 
+export type IMapStateToProps<I>  = (store: IStore) => I;
+
 export const store = createStore(liftReducer, composeWithDevTools(applyMiddleware(thunk, liftLiveStatusMiddleware)));

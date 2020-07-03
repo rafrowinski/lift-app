@@ -3,7 +3,7 @@ import { CircularProgress, Button, Grid, makeStyles } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { BuildingData } from '../../helpers/RestHelper';
 import { LiftThunkDispatch, requestBuildingData } from '../../redux/actionCreators';
-import { IStore } from '../../redux/store';
+import { IMapStateToProps, IStore } from '../../redux/store';
 
 interface IOwnProps {
     onFloorSelected: (floorNumber: number) => void
@@ -70,9 +70,7 @@ const Component: FC<IProps> = ({ buildingData, requestBuildingData, onFloorSelec
     );
 }
 
-type IMapStateToProps = (store: IStore) => IStateProps;
-
-const mapStateToProps: IMapStateToProps = ({ buildingData }) => ({
+const mapStateToProps: IMapStateToProps<IStateProps> = ({ buildingData }) => ({
     buildingData,
 })
 
