@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { Container, Grid } from '@material-ui/core';
 import { LiftWizard } from '../LiftStepper/LiftWizard';
 
